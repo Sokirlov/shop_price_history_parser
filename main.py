@@ -23,12 +23,5 @@ schedule.every().day.at("12:30").do(run_silpo)
 if __name__ == '__main__':
     while True:
         schedule.run_pending()
-        time.sleep(60)  # Перевіряємо щосекунди
+        time.sleep(60)
 
-
-# if __name__ == '__main__':
-#     silpo = Silpo()
-#     silpo.fetch_index_page()
-#     pages = silpo.build_pages(Silpo)
-#     print(f'I have {len(pages)} pages')
-#     run_scraper(pages)
