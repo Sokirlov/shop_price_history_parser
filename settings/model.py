@@ -16,13 +16,13 @@ class ShopCategory:
                  name,
                  url,
                  shop_id: int = 1,
-                 id_: Optional[int] = None,
+                 id: Optional[int] = None,
                  *args, **kwargs):
 
         self.name = name
         self.url = url
         self.shop_id = shop_id
-        self.id = id_
+        self.id = id
 
 
 class ShopProducts:

@@ -16,7 +16,7 @@ class PageControler:
 
         if self.category_page:
             additional_pages = self.parser.get_paginated_page(self.soup)
-            tasks = [PageControler(i, self.category_id, self.parser.__name__) for i in additional_pages]
+            tasks = [PageControler(i, self.category_id, self.parser) for i in additional_pages]
 
         return tasks
 
@@ -32,7 +32,7 @@ class PageControler:
 
     def __init__(self, url: str, category_id: int, parser_class:BaseParser, category_page: bool=False):
 
-        self.parser = parser_class()
+        self.parser = parser_class
 
         self.url = url
         self.category_id = category_id

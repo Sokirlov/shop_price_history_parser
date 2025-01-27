@@ -33,7 +33,7 @@ class Scraper:
 
         async with aiohttp.ClientSession(cookies=self.cookies) as session:
             async with self.lock:
-                tasks = [self.fetch_url(session, page) for page in self.to_get_page[:3]]  # Створюємо список завдань
+                tasks = [self.fetch_url(session, page) for page in self.to_get_page]  # Створюємо список завдань
                 self.to_get_page.clear()
 
             results = await asyncio.gather(*tasks)

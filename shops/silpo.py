@@ -42,8 +42,8 @@ class Silpo(BaseParser):
             self.categories = dict(name=name, url=url)
         self.send_categories()
 
-    def build_pages(self, name):
-        pages = [PageControler(url=i.url, category_id=i.id, parser_class=name, category_page=True) for i in self.categories.values()]
+    def build_pages(self, *args, **kwargs):
+        pages = [PageControler(url=i.url, category_id=i.id, parser_class=self, category_page=True) for i in self.categories.values()]
         return pages
 
     # def get_products(self, soup: BeautifulSoup):
