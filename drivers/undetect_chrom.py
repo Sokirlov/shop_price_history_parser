@@ -5,16 +5,15 @@ from typing_extensions import Optional
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
-class Scraper:
 
+class Scraper:
     driver = None
 
     @property
     def options(self):
         options_ = uc.ChromeOptions()
-        options_.headless = False  # Змінити на False для дебагу
+        options_.headless = True  # For view window use False
         return options_
-
 
     def create_driver(self):
         self.driver = uc.Chrome(options=self.options, use_subprocexss=True)
@@ -24,15 +23,13 @@ class Scraper:
     def close_driver(self):
         self.driver.quit()
 
-
     def restart_driver(self):
         if self.driver:
             self.driver.close()
         time.sleep(1)
         self.create_driver()
 
-
-    def get_page(self, url: str, click_: Optional[list]=None):
+    def get_page(self, url: str, click_: Optional[list] = None):
         self.create_driver()
         try:
             self.driver.get(url)
@@ -47,7 +44,7 @@ class Scraper:
             self.close_driver()
             return self.get_page(url)
 
-    def driver_click(self, click_: Optional[list]=None) -> None:
+    def driver_click(self, click_: Optional[list] = None) -> None:
         """
         :param click_: mast be list of params like click=[By.ID, "category-menu-button"]
             firs params set 'By.' type search, second params set name search
@@ -62,7 +59,6 @@ class Scraper:
         try:
             html = self.driver.page_source
         except Exception as e:
+            print(f'DRIVER Exception {e}')
             html = False
         return html
-
-

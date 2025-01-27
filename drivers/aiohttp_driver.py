@@ -14,7 +14,6 @@ class Scraper:
     #         cookies_dict = {cookie['name']: cookie['value'] for cookie in cookies}
 
     async def fetch_url(self, session, page: PageControler):
-
         try:
             async with session.get(page.url, ssl=False) as response:
                 html =  await response.text()  # Отримуємо текстовий вміст сторінки
@@ -22,15 +21,13 @@ class Scraper:
                 page.soup = BeautifulSoup(html, "html.parser")
                 result = page.analyze_page()
                 return result
-
         except Exception as e:
             print(f"Error fetching {page}: {e}")
             await asyncio.sleep(3)
             await self.fetch_url(session, page)
 
+
     async def fetch_all_urls(self):
-
-
         async with aiohttp.ClientSession(cookies=self.cookies) as session:
             async with self.lock:
                 tasks = [self.fetch_url(session, page) for page in self.to_get_page]  # Створюємо список завдань

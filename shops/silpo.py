@@ -155,10 +155,12 @@ class Silpo(BaseParser):
         return pages
 
     def get_paginated_page(self, soup: BeautifulSoup) -> list[str]:
-        pagination_block = soup.find('div', class_='pagination__items')
-        pagination = pagination_block.find_all('a', class_='pagination-item')
-        if not pagination:
+        try:
+            pagination_block = soup.find('div', class_='pagination__items')
+            pagination = pagination_block.find_all('a', class_='pagination-item')
+        except (NoSuchElementException, AttributeError):
             return []
+
         last_pagination = pagination[-1].get('href')
         pages = self.build_pagination_pages(last_pagination)
         print(f'[get_paginations] - > last_pagination: {last_pagination} | {len(pages)} pages | {pages}')
