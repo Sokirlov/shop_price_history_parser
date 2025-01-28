@@ -36,7 +36,7 @@ class Scraper:
             time.sleep(1)
             if click_:
                 self.driver_click(click_)
-                time.sleep(2)
+                time.sleep(4)
             html = self.driver.page_source
             return html
         except Exception as e:
