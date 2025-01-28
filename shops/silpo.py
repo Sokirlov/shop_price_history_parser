@@ -33,9 +33,15 @@ class Silpo(BaseParser):
         return cookies
 
 
-    def get_category(self, soup: BeautifulSoup):
-        category_block = soup.find('ul', class_='menu-categories')
-        all_categories = category_block.find_all(class_='menu-categories__link')
+    def get_category(self, soup: BeautifulSoup, n=5):
+        try:
+            category_block = soup.find('ul', class_='menu-categories')
+            all_categories = category_block.find_all(class_='menu-categories__link')
+        except (NoSuchElementException, AttributeError):
+            print(f'category_block: {category_block}\n\n, soup: {soup}')
+            n -= 1
+            if n > 0:
+                self.get_category(soup, n=n)
         for category in all_categories:
             name = category.text.strip()
             url = self.get_full_url(category.get('href'))
