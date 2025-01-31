@@ -25,7 +25,7 @@ class Silpo(BaseParser):
         забираємо html
         """
         driver_ = Scraper()
-        html = driver_.get_page(url='https://silpo.ua', click_=[By.ID, "category-menu-button"])
+        html = driver_.get_page(url=self.base_url, click_=[By.ID, "category-menu-button"])
         soup = BeautifulSoup(html, 'html.parser')
         cookies = driver_.driver.get_cookies()
         driver_.close_driver()
@@ -126,7 +126,6 @@ class Silpo(BaseParser):
                                  )
             self.products = prod
         return self.products
-
 
     def get_updated_pagination_link(self, url, query_, last_page: int) -> str:
         for page in range(2, last_page + 1):
