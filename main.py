@@ -7,9 +7,11 @@ from shops.silpo import Silpo
 
 
 def run_silpo():
+    cookies_dict = None
     silpo = Silpo()
     cookies = silpo.fetch_index_page()
-    cookies_dict = {cookie['name']: cookie['value'] for cookie in cookies}
+    if cookies:
+        cookies_dict = {cookie['name']: cookie['value'] for cookie in cookies}
     urls = silpo.build_pages(Silpo)
     print(f'I have {len(urls)} pages')
     urls = asyncio.run(Scraper(urls, cookies=cookies_dict).fetch_all_urls())

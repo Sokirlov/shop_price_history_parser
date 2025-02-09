@@ -1,5 +1,5 @@
 from typing import Optional
-
+from settings.config import settings
 
 class ShopCategory:
     """
@@ -15,7 +15,7 @@ class ShopCategory:
     def __init__(self,
                  name,
                  url,
-                 shop_id: int = 1,
+                 shop_id: int = settings.SILPO_SHOP_ID,
                  id: Optional[int] = None,
                  *args, **kwargs):
 

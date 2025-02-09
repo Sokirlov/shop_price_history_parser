@@ -1,9 +1,12 @@
+import json
 import re
-from urllib import parse
+import time
+from urllib import parse, request
 from bs4 import BeautifulSoup
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
+from settings.config import settings
 from settings.model import ShopProducts
 from settings.controller import PageControler
 from settings.base_parser import BaseParser
@@ -18,18 +21,37 @@ class Silpo(BaseParser):
     """
     __name__ = 'Silpo'
     base_url = 'https://silpo.ua'
+
+    def build_link_from_db(self):
+        data = None
+        with request.urlopen(f"{settings.API_URL_BASE}/api/{settings.SILPO_SHOP_ID}?page_size=200") as response:
+            if response.status == 200:
+                data = response.read().decode("utf-8")
+        data = json.loads(data)
+
+        for category in data.get('items', []):
+            if category.get('url'):
+                self.categories = dict(name=category.get("name"), url=category.get("url"), id=category.get("id"))
+
+
     def fetch_index_page(self):
         """
         Будуємо список з посилань на категорії з основної сторінки
         через селеніум відкриваємо сторінку, клікаємо на кнопку меню чекаємо 1 сек
         забираємо html
         """
-        driver_ = Scraper()
-        html = driver_.get_page(url=self.base_url, click_=[By.ID, "category-menu-button"])
-        soup = BeautifulSoup(html, 'html.parser')
-        cookies = driver_.driver.get_cookies()
-        driver_.close_driver()
-        self.get_category(soup)
+        try:
+            driver_ = Scraper()
+            html = driver_.get_page(url=self.base_url, click_=[By.ID, "category-menu-button"])
+            soup = BeautifulSoup(html, 'html.parser')
+
+            cookies = driver_.driver.get_cookies()
+            driver_.close_driver()
+            self.get_category(soup)
+        except Exception as e:
+            cookies = None
+            print(f"Exception as {e}")
+            self.build_link_from_db()
         return cookies
 
 
@@ -40,6 +62,7 @@ class Silpo(BaseParser):
         except (NoSuchElementException, AttributeError):
             n -= 1
             if n > 0:
+                time.sleep(5)
                 return self.get_category(soup, n=n)
             else:
                 print(f'Max try category_block: {category_block}\n\n,'[:300])
