@@ -67,7 +67,7 @@ class Silpo(BaseParser):
             else:
                 print(f'Max try category_block: {category_block}\n\n,'[:300])
                 return
-        if len(all_categories) <= 0:
+        if all_categories is None or len(all_categories) <= 0:
             raise Exception(f'No categories found')
         for category in all_categories:
             name = category.text.strip()
