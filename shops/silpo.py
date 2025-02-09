@@ -66,7 +66,7 @@ class Silpo(BaseParser):
                 return self.get_category(soup, n=n)
             else:
                 print(f'Max try category_block: {category_block}\n\n,'[:300])
-                return
+                raise Exception(f'No categories found')
         if all_categories is None or len(all_categories) <= 0:
             raise Exception(f'No categories found')
         for category in all_categories:
