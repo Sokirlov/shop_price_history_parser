@@ -56,19 +56,9 @@ class Silpo(BaseParser):
 
 
     def get_category(self, soup: BeautifulSoup, n=5):
-        try:
-            category_block = soup.find('ul', class_='menu-categories')
-            all_categories = category_block.find_all(class_='menu-categories__link')
-        except (NoSuchElementException, AttributeError):
-            n -= 1
-            if n > 0:
-                time.sleep(5)
-                return self.get_category(soup, n=n)
-            else:
-                print(f'Max try category_block: {category_block}\n\n,'[:300])
-                raise Exception(f'No categories found')
-        if all_categories is None or len(all_categories) <= 0:
-            raise Exception(f'No categories found')
+        category_block = soup.find('ul', class_='menu-categories')
+        all_categories = category_block.find_all(class_='menu-categories__link')
+
         for category in all_categories:
             name = category.text.strip()
             url = self.get_full_url(category.get('href'))
