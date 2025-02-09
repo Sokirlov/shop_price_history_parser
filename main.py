@@ -23,10 +23,10 @@ def run_silpo():
 schedule.every().day.at("09:30").do(run_silpo)
 
 if __name__ == '__main__':
-    run_silpo()
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(60)
+    # run_silpo()
+    while True:
+        schedule.run_pending()
+        time.sleep(60)
 
 
 # if __name__ == '__main__':

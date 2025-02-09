@@ -67,7 +67,8 @@ class Silpo(BaseParser):
             else:
                 print(f'Max try category_block: {category_block}\n\n,'[:300])
                 return
-
+        if len(all_categories) <= 0:
+            raise Exception(f'No categories found')
         for category in all_categories:
             name = category.text.strip()
             url = self.get_full_url(category.get('href'))
