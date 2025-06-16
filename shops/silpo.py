@@ -33,7 +33,6 @@ class Silpo(BaseParser):
             if category.get('url'):
                 self.categories = dict(name=category.get("name"), url=category.get("url"), id=category.get("id"))
 
-
     def fetch_index_page(self):
         """
         Будуємо список з посилань на категорії з основної сторінки
@@ -53,7 +52,6 @@ class Silpo(BaseParser):
             print(f"Exception as {e}")
             self.build_link_from_db()
         return cookies
-
 
     def get_category(self, soup: BeautifulSoup, n=5):
         category_block = soup.find('ul', class_='menu-categories')

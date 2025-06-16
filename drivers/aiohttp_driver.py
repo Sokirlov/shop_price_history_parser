@@ -36,9 +36,10 @@ class Scraper:
 
             results = await asyncio.gather(*tasks)
             for result in results:
-                # print(f'[get_page] => {len(result)}')
+                # print(f'[get_page] => {len(result)} | {result}')
                 if result:
                     self.to_get_page.extend(result)
+                # await asyncio.sleep(1)
 
         if self.to_get_page:
             print('I have {} pages to fetch'.format(len(self.to_get_page)))

@@ -31,9 +31,7 @@ class PageControler:
         return f'{self.url}'
 
     def __init__(self, url: str, category_id: int, parser_class:BaseParser, category_page: bool=False):
-
         self.parser = parser_class
-
         self.url = url
         self.category_id = category_id
         self.category_page = category_page
