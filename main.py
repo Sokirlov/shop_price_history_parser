@@ -26,7 +26,7 @@ def run_silpo():
         logging.error(e)
 
 # Запускаємо парсер сільпо кожного дня о 9:30  server time - 3 hour
-schedule.every().day.at("7:00").do(run_silpo)
+schedule.every().day.at("07:00").do(run_silpo)
 
 if __name__ == '__main__':
     # run_silpo()
