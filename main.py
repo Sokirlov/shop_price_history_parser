@@ -24,6 +24,7 @@ def run_silpo():
         asyncio.run(Scraper(urls=urls, cookies=cookies_dict).fetch_all_urls())
     except Exception as e:
         logging.error(e)
+        raise e
 
 # Запускаємо парсер сільпо кожного дня о 9:30  server time - 3 hour
 schedule.every().day.at("07:00").do(run_silpo)
