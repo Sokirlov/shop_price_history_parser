@@ -1,3 +1,5 @@
+import logging
+
 import aiohttp
 import asyncio
 from bs4 import BeautifulSoup
@@ -18,12 +20,12 @@ class Scraper:
             try:
                 async with session.get(page.url, ssl=False) as response:
                     html =  await response.text()  # Отримуємо текстовий вміст сторінки
-                    print(f'[get_page] {response.status} => {page.url} => {len(html)} symbols')
+                    logging.info(f'[get_page] {response.status} => {page.url} => {len(html)} symbols')
                     page.soup = BeautifulSoup(html, "html.parser")
                     result = page.analyze_page()
                     return result
             except Exception as e:
-                print(f"Error fetching {page}: {e}")
+                logging.warning(f"Error fetching {page}: {e}")
                 await asyncio.sleep(3)
                 await self.fetch_url(session, page)
 
@@ -42,9 +44,9 @@ class Scraper:
                 # await asyncio.sleep(1)
 
         if self.to_get_page:
-            print('I have {} pages to fetch'.format(len(self.to_get_page)))
+            logging.info('I have {} pages to fetch'.format(len(self.to_get_page)))
             return self.to_get_page
-        print('all_urls done fetching\n')
+        logging.info('all_urls done fetching\n')
 
     def __init__(self, urls: list[PageControler], cookies: dict[str, str] = None, max_concurrent_requests: int = 5):
         self.lock = asyncio.Lock()
