@@ -19,9 +19,15 @@ def run_silpo():
             cookies_dict = {cookie['name']: cookie['value'] for cookie in cookies}
         urls = silpo.build_pages(Silpo)
         logging.info(f'I have {len(urls)} pages')
-        urls = asyncio.run(Scraper(urls, cookies=cookies_dict).fetch_all_urls())
+        loop = asyncio.new_event_loop()
+        logging.info('Create async loop')
+        scraper = Scraper(urls, cookies_dict)
+        logging.info(f'Scrape initial {len(urls)} urls')
+        urls = loop.run_until_complete(scraper.fetch_all_urls())
         logging.info('start scraping {} pages'.format(len(urls)))
-        asyncio.run(Scraper(urls=urls, cookies=cookies_dict).fetch_all_urls())
+        scraper = Scraper(urls, cookies_dict)
+        logging.info(f'Scrape initial {len(urls)} urls')
+        loop.run_until_complete(scraper.fetch_all_urls())
     except Exception as e:
         logging.error(e)
         raise e
