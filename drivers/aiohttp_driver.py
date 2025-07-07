@@ -32,7 +32,7 @@ class Scraper:
 
     async def fetch_all_urls(self):
         async with aiohttp.ClientSession(cookies=self.cookies) as session:
-            logging.debug(f'[fetch_all_urls] {len(self.cookies)} cookies')
+            logging.debug(f'[fetch_all_urls] {self.cookies} cookies')
             async with self.lock:
                 tasks = [self.fetch_url(session, page) for page in self.to_get_page]  # Створюємо список завдань
                 logging.debug(f'[fetch_all_urls] create {len(tasks)} tasks')
