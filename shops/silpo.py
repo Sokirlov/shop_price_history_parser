@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 import time
 from urllib import parse, request
@@ -45,6 +46,7 @@ class Silpo(BaseParser):
             soup = BeautifulSoup(html, 'html.parser')
 
             cookies = driver_.driver.get_cookies()
+            logging.info(f'[fetch_index_page] cookies: {cookies}')
             driver_.close_driver()
             self.get_category(soup)
         except Exception as e:
@@ -65,6 +67,7 @@ class Silpo(BaseParser):
 
     def build_pages(self, *args, **kwargs):
         pages = [PageControler(url=i.url, category_id=i.id, parser_class=self, category_page=True) for i in self.categories.values()]
+        logging.info(f'[build_pages] {pages}')
         return pages
 
     # def get_products(self, soup: BeautifulSoup):
