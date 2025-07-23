@@ -1,3 +1,5 @@
+import logging
+
 from bs4 import BeautifulSoup
 
 from .base_parser import BaseParser
@@ -10,9 +12,17 @@ class PageControler:
         tasks = []
         if not self.soup:
             raise AttributeError('soup is required. Get soup first.')
+        try:
+            self.parser.get_products(self.soup, self.category_id)
+        except Exception as e:
+            logging.error(f'[analyze_page] - get_products - {self.category_id} => {e}')
+            raise e
 
-        self.parser.get_products(self.soup, self.category_id)
-        self.parser.send_products()
+        try:
+            self.parser.send_products()
+        except Exception as e:
+            logging.error(f'[analyze_page] - send_products - {self.category_id} => {e}')
+            raise e
 
         if self.category_page:
             additional_pages = self.parser.get_paginated_page(self.soup)

@@ -81,7 +81,10 @@ class Silpo(BaseParser):
     def get_price(card: BeautifulSoup) -> float:
         # try:
         price_ = card.find('div', class_='product-card-price')
-        price_ = price_.findNext('div').get_text().strip()
+        try:
+            price_ = price_.findNext('div').get_text().strip()
+        except Exception as e:
+            logging.error(f'[get_price] {e}')
 
         # except Exception as e:
         #     print(f'[get_price] {e}')
@@ -91,7 +94,7 @@ class Silpo(BaseParser):
         try:
             price = float(price_)
         except ValueError:
-            print(f'[get_price] => ValueError {price_} no float')
+            logging.error(f'[get_price] => ValueError {price_} no float')
             return 0.0
         return price
 
