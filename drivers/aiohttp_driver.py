@@ -31,6 +31,7 @@ class Scraper:
 
 
     async def fetch_all_urls(self):
+        logging.info(f'fetch_all_urls cookies={self.cookies}')
         async with aiohttp.ClientSession(cookies=self.cookies) as session:
             logging.debug(f'[fetch_all_urls] {self.cookies} cookies')
             async with self.lock:
@@ -42,10 +43,10 @@ class Scraper:
             results = await asyncio.gather(*tasks)
 
             for result in results:
-                print(f'[get_page] => {len(result)} | {result}')
+                logging.info(f'[get_page] => {len(result)} | {result}')
                 if result:
                     self.to_get_page.extend(result)
-                # await asyncio.sleep(1)
+                await asyncio.sleep(0.3)
 
         if self.to_get_page:
             logging.info('I have {} pages to fetch'.format(len(self.to_get_page)))
